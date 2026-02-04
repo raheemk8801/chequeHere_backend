@@ -1,0 +1,3 @@
+/*************  ✨ Windsurf Command ⭐  *************/
+echo "hello world" >> info.txt
+/*******  f5f699e3-c2a1-4e20-8581-7bd716f35289  *******/
