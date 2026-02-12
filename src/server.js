@@ -4,6 +4,8 @@ import { Server } from "socket.io";
 import cors from "cors";
 import dotenv from "dotenv";
 import connectDB from "./config/db.js";
+import supplierRoutes from "./routes/supplier.route.js";
+import employeeRoutes from "./routes/employee.route.js";
 
 dotenv.config();
 
@@ -22,7 +24,7 @@ app.use(express.json());
 const io = new Server(server, {
   cors: {
     origin: "*", // restrict later in prod
-    methods: ["GET", "POST"]
+    methods: ["GET", "POST", "PUT", "DELETE"],
   }
 });
 
@@ -45,11 +47,23 @@ io.on("connection", (socket) => {
   });
 });
 
+
+app.use("/api/suppliers", supplierRoutes);
+app.use("/api/employees", employeeRoutes);
+
+
 /**
  * HEALTH CHECK (optional but useful)
  */
 app.get("/", (req, res) => {
   res.send("Socket.IO server is running 🚀");
+});
+
+app.use((err, req, res, next) => {
+  res.status(err.statusCode || 500).json({
+    success: false,
+    message: err.message || "Internal Server Error",
+  });
 });
 
 /**
