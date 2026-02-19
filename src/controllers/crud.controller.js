@@ -61,9 +61,15 @@ export const deleteOne = (Model) => async (req, res, next) => {
   }
 };
 
-export const getAll = (Model) => async (req, res, next) => {
+export const getAll = (Model, populateFields = null) => async (req, res, next) => {
   try {
-    const docs = await Model.find();
+    let query = Model.find();
+
+    if (populateFields) {
+      query = query.populate(populateFields);
+    }
+
+    const docs = await query;
 
     return res.status(200).json({
       success: true,
@@ -71,19 +77,23 @@ export const getAll = (Model) => async (req, res, next) => {
       data: docs,
     });
   } catch (error) {
-    console.log("Error getting all documents:", error);
     next(error);
   }
 };
 
-export const getOne = (Model) => async (req, res, next) => {
+
+export const getOne = (Model, populateFields = null) => async (req, res, next) => {
   try {
-    const doc = await Model.findById(req.params.id);
+    let query = Model.findById(req.params.id);
+
+    if (populateFields) {
+      query = query.populate(populateFields);
+    }
+
+    const doc = await query;
 
     if (!doc) {
-      return next(
-        errorHandler(404, `${Model.modelName} not found!`)
-      );
+      return next(errorHandler(404, `${Model.modelName} not found!`));
     }
 
     return res.status(200).json({
@@ -91,7 +101,6 @@ export const getOne = (Model) => async (req, res, next) => {
       data: doc,
     });
   } catch (error) {
-    console.log("Error getting document:", error);
     next(error);
   }
 };
