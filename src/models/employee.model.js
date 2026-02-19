@@ -24,6 +24,10 @@ const employeeSchema = new mongoose.Schema(
             required: false,
             lowercase: true,
         },
+        e_wage: {
+            type: Number,
+            required: true,
+        },
         e_address: {
             type: String,
             required: false,
