@@ -8,6 +8,7 @@ import supplierRoutes from "./routes/supplier.route.js";
 import employeeRoutes from "./routes/employee.route.js";
 import pendingInvRoutes from "./routes/pendingInv.route.js";
 import expenseRoutes from './routes/expense.route.js';
+import salesRoutes from './routes/sales.route.js';
 
 dotenv.config();
 
@@ -54,7 +55,7 @@ app.use("/api/suppliers", supplierRoutes);
 app.use("/api/employees", employeeRoutes);
 app.use("/api/pendingInv", pendingInvRoutes);
 app.use("/api/expenses", expenseRoutes);
-
+app.use("/api/sales", salesRoutes);
 
 /**
  * HEALTH CHECK (optional but useful)
