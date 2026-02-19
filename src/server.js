@@ -7,6 +7,7 @@ import connectDB from "./config/db.js";
 import supplierRoutes from "./routes/supplier.route.js";
 import employeeRoutes from "./routes/employee.route.js";
 import pendingInvRoutes from "./routes/pendingInv.route.js";
+import expenseRoutes from './routes/expense.route.js';
 
 dotenv.config();
 
@@ -52,6 +53,7 @@ io.on("connection", (socket) => {
 app.use("/api/suppliers", supplierRoutes);
 app.use("/api/employees", employeeRoutes);
 app.use("/api/pendingInv", pendingInvRoutes);
+app.use("/api/expenses", expenseRoutes);
 
 
 /**
