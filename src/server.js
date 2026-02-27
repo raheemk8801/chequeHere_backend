@@ -8,6 +8,11 @@ import { clerkMiddleware } from "@clerk/express";
 
 // Routes
 import userRoutes from "./routes/userRoutes.js";
+import supplierRoutes from "./routes/supplier.route.js";
+import employeeRoutes from "./routes/employee.route.js";
+import pendingInvRoutes from "./routes/pendingInv.route.js";
+import expenseRoutes from "./routes/expense.route.js";
+import salesRoutes from "./routes/sales.route.js";
 
 dotenv.config();
 
@@ -34,8 +39,8 @@ app.use(clerkMiddleware());
  */
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173", // restrict later in prod
-    methods: ["GET", "POST"],
+    origin: "*", // restrict later in prod
+    methods: ["GET", "POST", "PUT", "DELETE"],
   },
 });
 
@@ -57,6 +62,12 @@ io.on("connection", (socket) => {
   });
 });
 
+app.use("/api/suppliers", supplierRoutes);
+app.use("/api/employees", employeeRoutes);
+app.use("/api/pendingInv", pendingInvRoutes);
+app.use("/api/expenses", expenseRoutes);
+app.use("/api/sales", salesRoutes);
+
 /**
  * ROUTES
  */
@@ -71,8 +82,12 @@ app.get("/", (req, res) => {
   res.send("Socket.IO server is running 🚀");
 });
 
-// ✅ Users API (Mongo write: test/users)
-app.use("/api/users", userRoutes);
+app.use((err, req, res, next) => {
+  res.status(err.statusCode || 500).json({
+    success: false,
+    message: err.message || "Internal Server Error",
+  });
+});
 
 /**
  * START SERVER
